@@ -18,7 +18,6 @@ public class WebController {
         return "hello";
     }
 
-
     public String getName() throws Exception{
         ScriptEngineManager scriptEngineManager = new ScriptEngineManager();
         ScriptEngine engine = scriptEngineManager.getEngineByName("nashorn");
