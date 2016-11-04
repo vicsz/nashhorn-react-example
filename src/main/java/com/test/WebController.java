@@ -6,8 +6,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.script.Invocable;
-import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import java.io.*;
 
@@ -15,31 +13,25 @@ import java.io.*;
 public class WebController {
     @RequestMapping("/hello")
     public String hello(Model model, @RequestParam(value="name", required=false, defaultValue="World") String name) throws Exception {
-        model.addAttribute("name", getName());
+        model.addAttribute("name", renderRegularJS());
         model.addAttribute("serverSideReact", renderReact());
 
         return "hello";
     }
 
-    public String getName() throws Exception{
+    public String renderRegularJS() throws Exception{
         ScriptEngineManager scriptEngineManager = new ScriptEngineManager();
-        ScriptEngine engine = scriptEngineManager.getEngineByName("nashorn");
+        NashornScriptEngine engine = (NashornScriptEngine)scriptEngineManager.getEngineByName("nashorn");
 
-        System.out.println(new File("").getAbsolutePath());
         engine.eval(getReaderForResource("static/js/namegenerator.js"));
 
-        Invocable invocable = (Invocable) engine;
-
-        Object result = invocable.invokeFunction("getNameJS");
-
-        return result.toString();
+        return engine.invokeFunction("getNameJS").toString();
     }
 
     public String renderReact() throws Exception{
         ScriptEngineManager scriptEngineManager = new ScriptEngineManager();
         NashornScriptEngine engine = (NashornScriptEngine) scriptEngineManager.getEngineByName("nashorn");
 
-        System.out.println(new File("").getAbsolutePath());
         engine.eval("load('https://cdnjs.cloudflare.com/ajax/libs/react/15.3.2/react.js')");
         engine.eval("load('https://cdnjs.cloudflare.com/ajax/libs/react/15.3.2/react-dom-server.js')");
 
