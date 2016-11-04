@@ -1,5 +1,6 @@
 package com.test;
 
+import jdk.nashorn.api.scripting.NashornScriptEngine;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +16,8 @@ public class WebController {
     @RequestMapping("/hello")
     public String hello(Model model, @RequestParam(value="name", required=false, defaultValue="World") String name) throws Exception {
         model.addAttribute("name", getName());
+        model.addAttribute("serverSideReact", renderReact());
+
         return "hello";
     }
 
@@ -32,8 +35,19 @@ public class WebController {
         return result.toString();
     }
 
-    private Reader getReaderForResource(String path) {
-        InputStream in = getClass().getClassLoader().getResourceAsStream(path);
-        return new InputStreamReader(in);
+    public String renderReact() throws Exception{
+        ScriptEngineManager scriptEngineManager = new ScriptEngineManager();
+        NashornScriptEngine engine = (NashornScriptEngine) scriptEngineManager.getEngineByName("nashorn");
+
+        System.out.println(new File("").getAbsolutePath());
+        engine.eval("load('https://cdnjs.cloudflare.com/ajax/libs/react/15.3.2/react.js')");
+        engine.eval("load('https://cdnjs.cloudflare.com/ajax/libs/react/15.3.2/react-dom-server.js')");
+
+        return engine.eval("ReactDOMServer.renderToString(React.createElement('div', null, 'Hello Server Side ReactJS!'));").toString();
     }
+
+    private Reader getReaderForResource(String path) {
+        return new InputStreamReader(getClass().getClassLoader().getResourceAsStream(path));
+    }
+
 }
