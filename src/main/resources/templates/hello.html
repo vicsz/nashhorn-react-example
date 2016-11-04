@@ -5,12 +5,12 @@
     <title>Hello Thymeleaf!</title>
 </head>
 <body>
-<p th:text="'Hello, ' + ${name} + '!'" />
 
 <div id="app">
-    <!-- REACTJS renders here -->
+    <!-- REACTJS Client Side renders here -->
 </div>
 <div th:utext="${serverSideReact}">
+    <!-- REACTJS Server Side renders here -->
 </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.3.2/react.js"></script>

@@ -13,19 +13,8 @@ import java.io.*;
 public class WebController {
     @RequestMapping("/hello")
     public String hello(Model model, @RequestParam(value="name", required=false, defaultValue="World") String name) throws Exception {
-        model.addAttribute("name", renderRegularJS());
         model.addAttribute("serverSideReact", renderReact());
-
         return "hello";
-    }
-
-    public String renderRegularJS() throws Exception{
-        ScriptEngineManager scriptEngineManager = new ScriptEngineManager();
-        NashornScriptEngine engine = (NashornScriptEngine)scriptEngineManager.getEngineByName("nashorn");
-
-        engine.eval(getReaderForResource("static/js/namegenerator.js"));
-
-        return engine.invokeFunction("getNameJS").toString();
     }
 
     public String renderReact() throws Exception{
