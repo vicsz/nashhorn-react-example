@@ -34,8 +34,10 @@ public class WebController {
 
         engine.eval("load('https://cdnjs.cloudflare.com/ajax/libs/react/15.3.2/react.js')");
         engine.eval("load('https://cdnjs.cloudflare.com/ajax/libs/react/15.3.2/react-dom-server.js')");
+        engine.eval("load('https://cdnjs.cloudflare.com/ajax/libs/react/15.3.2/react-dom.js')");
+        engine.eval(getReaderForResource("static/js/component.js"));
 
-        return engine.eval("ReactDOMServer.renderToString(React.createElement('div', null, 'Hello Server Side ReactJS!'));").toString();
+        return engine.eval("ReactDOMServer.renderToString(React.createElement(HelloMessage));").toString();
     }
 
     private Reader getReaderForResource(String path) {

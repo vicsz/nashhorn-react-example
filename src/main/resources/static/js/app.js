@@ -1,4 +1,4 @@
    ReactDOM.render(
-              React.DOM.h1(null, "Hello From React!!!!"),
+              React.createElement(HelloMessage),
               document.getElementById("app")
             );
