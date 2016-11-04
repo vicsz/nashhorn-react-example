@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.script.Invocable;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
-import java.io.FileReader;
+import java.io.*;
 
 @Controller
 public class WebController {
@@ -22,12 +22,18 @@ public class WebController {
         ScriptEngineManager scriptEngineManager = new ScriptEngineManager();
         ScriptEngine engine = scriptEngineManager.getEngineByName("nashorn");
 
-        engine.eval(new FileReader("src/main/resources/NameGenerator.js"));
+        System.out.println(new File("").getAbsolutePath());
+        engine.eval(getReaderForResource("static/js/namegenerator.js"));
 
         Invocable invocable = (Invocable) engine;
 
         Object result = invocable.invokeFunction("getNameJS");
 
         return result.toString();
+    }
+
+    private Reader getReaderForResource(String path) {
+        InputStream in = getClass().getClassLoader().getResourceAsStream(path);
+        return new InputStreamReader(in);
     }
 }
