@@ -4,15 +4,15 @@ import jdk.nashorn.api.scripting.NashornScriptEngine;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.script.ScriptEngineManager;
-import java.io.*;
+import java.io.InputStreamReader;
+import java.io.Reader;
 
 @Controller
 public class WebController {
     @RequestMapping("/hello")
-    public String hello(Model model, @RequestParam(value="name", required=false, defaultValue="World") String name) throws Exception {
+    public String hello(Model model) throws Exception {
         model.addAttribute("serverSideReact", renderReact());
         return "hello";
     }
