@@ -6,12 +6,10 @@
 </head>
 <body>
 
-<div id="app">
-    <!-- REACTJS Client Side renders here -->
+<div id="app" th:utext="${serverSideReact}">
+    <!-- REACTJS renders here -->
 </div>
-<div th:utext="${serverSideReact}">
-    <!-- REACTJS Server Side renders here -->
-</div>
+
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.3.2/react.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.3.2/react-dom.js"></script>
